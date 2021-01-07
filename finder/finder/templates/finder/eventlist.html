@@ -1,0 +1,26 @@
+{% extends 'finder/base.html' %}
+{% load socialaccount %}
+
+{% block title %}
+   Events
+{% endblock %}
+{% block content %}
+    <h1>Finder</h1>
+    {% if user.is_authenticated %}
+        <div class="container">
+            <h1>Choose a event</h1>
+            {% if events_list %}
+                <ul>
+                    {% for event in events_list %}
+                        <li><a href="{% url 'finder:map' event.id %}">{{ event.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No events are available.</p>
+            {% endif %} 
+        </div>
+    {% else %}
+        <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    {% endif %}
+    
+{% endblock %}

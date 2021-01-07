@@ -1,0 +1,45 @@
+{% extends 'finder/base.html' %}
+{% load socialaccount %}
+
+{% block title %}
+  Detail
+{% endblock %}
+{% block content %}
+    <h1>Finder: Event Detail</h1>
+    <p></p>
+    {% if user.is_authenticated %}
+    <h3 class="text-center">Name: {{ event.name }}</h3>
+    <p><strong>Description:</strong> {{ event.description }}</p> 
+    <p><strong>Address:</strong> {{ event.address }}
+        {% if event.remote %} (remote)
+        {% elif event.outdoor %} (outdoors)
+        {% else %} (indoors) {% endif %}
+    </p>
+    <p><strong>Type:</strong> {{ event.eventtype }}</p>
+    <p><strong>Max Attendees:</strong> {{ event.size }}</p>
+    <p><strong>Covid Safety:</strong> {{ event.covidsafetylevel }}*</p>  
+    <p><strong>Start Date:</strong> {{ event.startdate }}</p> 
+
+    <p>
+        {% if event.masks %} Masks are required {% endif %}
+        {% if event.masks and event.distanced %} and s {% endif %}
+        {% if event.distanced and not event.masks %} S {% endif %}
+        {% if event.distanced %} ocial distancing enforced {% endif %}
+    </p>
+
+    <p>
+        *The COVID safety level is determined on a scale of 0 to 5 by Finder through various attributes of the event.
+        A level 0 is the least safe and a level 5 is the most safe. For more information about COVID-19 and safety standards please visit 
+        <a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank">the CDC website</a>.
+    </p>
+
+    <br>
+    <br>
+    <a href="javascript:history.go(-1)" class="btn btn-primary">Go Back</a>
+    <a href="{% url 'finder:reg_event' event.id %}" class="btn btn-primary">Register</a>    
+      
+    {% else %}
+    <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    {% endif %}
+
+{% endblock %}

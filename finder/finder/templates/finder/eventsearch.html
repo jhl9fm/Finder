@@ -1,0 +1,118 @@
+{% extends 'finder/base.html' %}
+{% load socialaccount %}
+
+{% block title %}
+    Search Event    
+{% endblock %}
+
+{% block content %}
+
+    <h1 align="center">Finder: Search Event</h1>
+    {% if user.is_authenticated %}
+        <div class="form-group">
+            <form method="POST" >
+                {% csrf_token %}
+                <table align="center" width="800">
+                <tr >
+                    <td align="right" width="30%">
+                        <label>Event Type: </label>
+                    </td>
+                    <td align="left" width="15%">
+                        <select name="eventtype" style="width: 100px;" >
+                        <!-- <option selected disabled=true>-- select event type --</option> -->
+                        <option>all</option>
+                        {% for type in types %}
+                            <option>{{type.eventtype}}</option>
+                        {% endfor %}
+                        </select>
+                    </td>
+                    <td width="55%"></td>
+                </tr>
+                </tr>
+                <tr>
+                    <td align="right" width="30%">
+                        <label>COVID Safety Level: </label>
+                    </td>
+                    <td align="left" width="15%">
+                        <select name="covidsafetylevel" style="width: 100px;" >
+                        <!-- <option selected disabled=true>-- select covid safety level --</option> -->
+                        {% for level in covidlevels %}
+                         <option>{{level.covidsafetylevel}}</option>
+                        {% endfor %}
+                        </select>
+                    </td>
+                    <td>Level 0 is least safe and level 5 is most safe. Searches will return all events with input safety level or higher.</td>
+                    <td width="50%"></td>
+                </tr>
+                <tr>
+                    <td align="right" width="30%">
+                        <label>Event Date: </label>
+                    </td>
+                    <td align="left" width="15%">
+                        <select id="dateopt" name="dateopt" style="width: 100px;">
+                          <option>all</option>
+                          <option>on</option>
+                          <option>before</option>
+                          <option>after</option>
+                          <option>between</option>
+                        </select>
+                    </td>
+                    <td align="left" width="55%">
+                        <input type="hidden" id="date1" name="date1"  placeholder="mm/dd/yyyy" min="01/01/2020" max="12/31/2020" style="width: 150px; height: 28px;"  > <label id='and' style="display:none">and</label>
+                        <input type="hidden" id="date2" name="date2" placeholder="mm/dd/yyyy" min="01/01/2020" max="12/31/2020" style="width: 150px; height: 28px;" >
+
+                    </td>
+                </tr>
+                <tr height = "20px">
+                    <td align="right" width="25%" ></td>
+                    <td align="left" width="15%"></td>
+                    <td align="left" width="55%"></td>
+                </tr>
+                
+                <tr>
+                    <td align="right" width="25%"></td>
+                    <td align="left" width="15%">
+                        <button type="submit" class="save btn btn-primary">Search</button>
+                    </td>
+                    <td align="left" width="55%"></td>
+                </tr>
+            </table>
+
+            </form>
+        </div>
+
+
+    {% else %}
+        <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    {% endif %}
+    
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+
+        $( document ).ready(function() {
+            var activities = document.getElementById("dateopt");
+
+            activities.addEventListener("change", function() {
+                if(activities.value == "all")
+                {
+                    document.getElementById("date1").type='hidden';
+                    document.getElementById("date2").type='hidden';
+                    document.getElementById("and").style.display = 'none';
+                }
+                else if( (activities.value != "all") && (activities.value != "between") )
+                {
+                    document.getElementById("date1").type='date';
+                    document.getElementById("date2").type='hidden';
+                    document.getElementById("and").style.display = 'none';;
+                }
+                else 
+                {               
+                    document.getElementById("date1").type='date';
+                    document.getElementById("date2").type='date';
+                    document.getElementById("and").style.display = 'inline';;
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

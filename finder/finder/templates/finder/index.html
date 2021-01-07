@@ -1,0 +1,29 @@
+{% extends 'finder/base.html' %}
+{% load socialaccount %}
+
+{% block title %}
+   Home
+{% endblock %}
+{% block content %}
+    <div class="text-center" style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height:100%;
+        width:100%;
+        margin-top: -25px;"
+    >
+            <div>
+                <h1><span style="background-color: #7996ab; color:	#FFFFFF; padding: 5px 10px;">Welcome to Finder</span></h1>
+                <h4>Your one-stop shop for finding, creating, and registering for events.</h4>
+
+                {% if user.is_authenticated %}
+                    <p>Thanks for being here, {{ user.username }} !</p>
+                {% else %}
+                <p>Please <a href="{% provider_login_url 'google' %}">login with Google</a> to continue using the app</p> 
+                {% endif %}
+            </div>
+    </div>
+
+{% endblock %}
+

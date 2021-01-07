@@ -1,0 +1,48 @@
+{% extends 'finder/base.html' %}
+{% load socialaccount %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Manage Event    
+{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="page-header">
+                <h1>{{header}}</h1>
+            </div>
+               
+            <form id="eventForm" method="POST" action="" autocomplete="off" style="text-align: left;">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="save btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    {% else %}
+        <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    {% endif %}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    
+    <script>
+        // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
+
+        window.addEventListener("DOMContentLoaded", function () {
+            flatpickr(".datetimefield", {
+                enableTime: true,
+                allowInput: true,
+                enableSeconds: false,
+                dateFormat: "m/d/Y H:i",
+            });
+        });
+    </script>    
+{% endblock %}
+
+

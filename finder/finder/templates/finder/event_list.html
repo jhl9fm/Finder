@@ -1,0 +1,57 @@
+{% extends 'finder/base.html' %}
+{% load socialaccount %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+   Event List
+{% endblock %}
+
+{% block content %}
+
+    <h1>Finder: Event List</h1>
+
+    {% if user.is_authenticated %}
+
+    <table class="table table-borderless">
+        <thead class="border-bottom font-weight-bold">
+            <tr>
+                <td>Name</td>
+                <td>Address</td>
+                <td>Date</td>
+                <td>
+                    <a href="{% url 'finder:add_event' %}" class="btn btn-outline-success">
+                        <i class="fas fa-plus"></i> Add New
+                    </a>
+                </td>
+    
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in event_list %}
+            <tr>
+                <td>{{event.name}}</td>
+                <td>{{event.address}}</td>
+                <td>{{event.startdate}}</td>
+                <td>
+                    <a href="{% url 'finder:update_event' event.id %}" class="btn text-secondary px-0">
+                        <i class="far fa-edit fa-lg"></i>
+                    </a>
+                    <form action="{% url 'finder:event_delete' event.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+                    </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    {% endif %}
+
+{% endblock content %}

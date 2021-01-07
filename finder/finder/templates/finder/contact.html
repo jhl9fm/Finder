@@ -1,0 +1,20 @@
+{% extends 'finder/base.html' %}
+{% load socialaccount %}
+
+{% block title %}
+   Contact
+{% endblock %}
+{% block content %}
+    <h1>Finder: Contact</h1>
+    {% if user.is_authenticated %}
+    <div  class="text-center">
+        <h4>Meet the Finder team!</h4>
+        <p><strong>Sarah Yao</strong> (smy5pc@virginia.edu): Second-year Computer Science major</p>
+        <p><strong>Josh Lee</strong> (jhl9fm@virginia.edu): Third-year Computer Science major</p>
+        <p><strong>Sonali Luthar</strong> (sl2ae@virginia.edu): Fourth-year Computer Science major</p>
+    </div>
+    {% else %}
+    <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    {% endif %}
+
+{% endblock %}
